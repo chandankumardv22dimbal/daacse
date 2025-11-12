@@ -1,0 +1,109 @@
+// App.js 
+import React, { useState } from 'react'; 
+import IssueList from './IssueList'; 
+import AddIssue from './AddIssue'; 
+import FilterIssue from './FilterIssue'; 
+function App() { 
+const [issues, setIssues] = useState([ 
+{ id: 1, title: 'Login Bug', status: 'Open' }, 
+{ id: 2, title: 'UI Alignment Issue', status: 'In Progress' }, 
+{ id: 3, title: 'Database Error', status: 'Closed' } 
+]); 
+const addIssue = (title, status) => { 
+const newIssue = { id: issues.length + 1, title, status }; 
+setIssues([...issues, newIssue]); 
+}; 
+const [filter, setFilter] = useState('All'); 
+const filteredIssues = 
+filter === 'All' ? issues : issues.filter((issue) => issue.status === filter); 
+return ( 
+<div className="App"> 
+<h2>Issue Tracker</h2> 
+<FilterIssue setFilter={setFilter} /> 
+<AddIssue addIssue={addIssue} /> 
+<IssueList issues={filteredIssues} /> 
+</div> 
+); 
+} 
+export default App; 
+
+
+
+// IssueList.js 
+import React from 'react'; 
+function IssueList({ issues }) { 
+return ( 
+<table border="1" cellPadding="8" style={{ marginTop: '20px', width: '100%' 
+}}> 
+<thead> 
+<tr> 
+<th>ID</th> 
+<th>Title</th> 
+<th>Status</th> 
+</tr> 
+</thead> 
+<tbody> 
+{issues.map((issue) => ( 
+<tr key={issue.id}> 
+<td>{issue.id}</td> 
+<td>{issue.title}</td> 
+<td>{issue.status}</td> 
+</tr> 
+))} 
+</tbody> 
+</table> 
+); 
+} 
+export default IssueList; 
+
+
+
+// AddIssue.js 
+import React, { useState } from 'react'; 
+function AddIssue({ addIssue }) { 
+const [title, setTitle] = useState( '); 
+const [status, setStatus] = useState('Open'); 
+const handleSubmit = (e) => { 
+e.preventDefault(); 
+if (title.trim() === ') return; 
+addIssue(title, status); 
+setTitle( '); 
+setStatus('Open'); 
+}; 
+return ( 
+<form onSubmit={handleSubmit}> 
+<input 
+type="text" 
+placeholder="Enter Issue Title" 
+value={title} 
+onChange={(e) => setTitle(e.target.value)} 
+/> 
+<select value={status} onChange={(e) => setStatus(e.target.value)}> 
+<option value="Open">Open</option> 
+<option value="In Progress">In Progress</option> 
+<option value="Closed">Closed</option> 
+</select> 
+<button type="submit">Add Issue</button> 
+</form> 
+); 
+} 
+export default AddIssue; 
+
+
+
+// FilterIssue.js 
+import React from 'react'; 
+function FilterIssue({ setFilter }) { 
+return ( 
+<div> 
+<label>Filter by Status: </label> 
+<select onChange={(e) => setFilter(e.target.value)}> 
+<option value="All">All</option> 
+<option value="Open">Open</option> 
+<option value="In Progress">In Progress</option> 
+<option value="Closed">Closed</option> 
+</select> 
+</div> 
+); 
+} 
+export default FilterIssue; 
